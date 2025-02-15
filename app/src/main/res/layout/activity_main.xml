@@ -9,11 +9,13 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/promptEditText"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/promptEditTextLayout"
+        style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="top|start"
         android:hint="@string/enter_your_prompt_here"
@@ -21,7 +23,13 @@
         android:minLines="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sendButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/promptEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <ImageButton
         android:id="@+id/sendButton"
@@ -35,7 +43,7 @@
         android:text="Send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/promptEditText" />
+        app:layout_constraintTop_toTopOf="@+id/promptEditTextLayout" />
 
     <ScrollView
         android:id="@+id/scrollText"
@@ -43,29 +51,42 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:nestedScrollingEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/promptEditText"
+        app:layout_constraintBottom_toTopOf="@+id/promptEditTextLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-                android:src="@drawable/twotone_computer_24"
                 android:layout_width="48dp"
-                android:layout_height="48dp" />
+                android:layout_height="48dp"
+                android:src="@drawable/twotone_computer_24" />
 
             <TextView
                 android:id="@+id/displayTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="@string/response"
+                android:text="waiting..."
                 android:textSize="18sp" />
+
         </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

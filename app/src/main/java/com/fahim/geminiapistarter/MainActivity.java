@@ -1,21 +1,35 @@
 package com.fahim.geminiapistarter;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.ai.client.generativeai.GenerativeModel;
+import com.google.ai.client.generativeai.type.GenerateContentResponse;
+
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.EmptyCoroutineContext;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText promptEditText;
     private ImageButton submitPromptButton;
     private TextView responseTextView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +44,43 @@ public class MainActivity extends AppCompatActivity {
         promptEditText = findViewById(R.id.promptEditText);
         submitPromptButton = findViewById(R.id.sendButton);
         responseTextView = findViewById(R.id.displayTextView);
+        progressBar = findViewById(R.id.progressBar);
 
+
+        // Create GenerativeModel
+        GenerativeModel generativeModel = new GenerativeModel("gemini-pro",
+                BuildConfig.API_KEY);
 
 
         submitPromptButton.setOnClickListener(v -> {
             String prompt = promptEditText.getText().toString();
+            promptEditText.setError(null);
             if (prompt.isEmpty()) {
                 promptEditText.setError(getString(R.string.field_cannot_be_empty));
+                String aistring = getString(R.string.aistring);
+                responseTextView.setText(TextFormatter.getBoldSpannableText(aistring));
                 return;
             }
-            promptEditText.setError(null);
+            progressBar.setVisibility(VISIBLE);
+            generativeModel.generateContent(prompt, new Continuation<GenerateContentResponse>() {
+                @NonNull
+                @Override
+                public CoroutineContext getContext() {
+                    return EmptyCoroutineContext.INSTANCE;
+                }
+
+                @Override
+                public void resumeWith(@NonNull Object o) {
+                    GenerateContentResponse response = (GenerateContentResponse) o;
+                    String responseString = response.getText();
+                    Log.d("Response", responseString);
+                    runOnUiThread(() -> {
+                        progressBar.setVisibility(GONE);
+                        responseTextView.setText(TextFormatter.getBoldSpannableText(responseString));
+
+                    });
+                }
+            });
         });
 
     }
