@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Create GenerativeModel
-        GenerativeModel generativeModel = new GenerativeModel("gemini-pro",
+        GenerativeModel generativeModel = new GenerativeModel("gemini-2.0-flash",
                 BuildConfig.API_KEY);
 
 
