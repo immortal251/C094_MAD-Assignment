@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
             promptEditText.setError(null);
             if (prompt.isEmpty()) {
                 promptEditText.setError(getString(R.string.field_cannot_be_empty));
-                String aistring = getString(R.string.aistring);
-                responseTextView.setText(TextFormatter.getBoldSpannableText(aistring));
+                String string = getString(R.string.aistring);
+                responseTextView.setText(TextFormatter.getBoldSpannableText(string));
                 return;
             }
             progressBar.setVisibility(VISIBLE);
