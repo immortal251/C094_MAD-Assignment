@@ -17,7 +17,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "API_KEY", "\"yourapikey\"")
+        val apiKey: String = project.findProperty("GEMINI_API_KEY") as String? ?: ""
+        buildConfigField("String", "API_KEY", "\"${apiKey}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

@@ -33,6 +33,7 @@ public class TextFormatter {
             String boldText = boldMatcher.group(1);
 
             // Remove ** from the original string
+            assert boldText != null;
             String newText = spannableString.toString().replace("**" + boldText + "**", boldText);
             spannableString = new SpannableString(newText);
 
@@ -66,6 +67,7 @@ public class TextFormatter {
             // Extract the bold text without the **
             String boldText = matcher.group(1);
             SpannableString spannable = new SpannableString(boldText);
+            assert boldText != null;
             spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, boldText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             // Append the bold text
