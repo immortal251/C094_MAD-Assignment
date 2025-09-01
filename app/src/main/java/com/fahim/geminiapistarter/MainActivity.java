@@ -27,7 +27,6 @@ import kotlin.coroutines.EmptyCoroutineContext;
 public class MainActivity extends AppCompatActivity {
 
     private EditText promptEditText;
-    private ImageButton submitPromptButton;
     private TextView responseTextView;
     private ProgressBar progressBar;
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         promptEditText = findViewById(R.id.promptEditText);
-        submitPromptButton = findViewById(R.id.sendButton);
+        ImageButton submitPromptButton = findViewById(R.id.sendButton);
         responseTextView = findViewById(R.id.displayTextView);
         progressBar = findViewById(R.id.progressBar);
 
@@ -57,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
             promptEditText.setError(null);
             if (prompt.isEmpty()) {
                 promptEditText.setError(getString(R.string.field_cannot_be_empty));
-                String aistring = getString(R.string.aistring);
-                responseTextView.setText(TextFormatter.getBoldSpannableText(aistring));
+                String string = getString(R.string.aistring);
+                responseTextView.setText(TextFormatter.getBoldSpannableText(string));
                 return;
             }
             progressBar.setVisibility(VISIBLE);
-            generativeModel.generateContent(prompt, new Continuation<GenerateContentResponse>() {
+            generativeModel.generateContent(prompt, new Continuation<>() {
                 @NonNull
                 @Override
                 public CoroutineContext getContext() {
@@ -73,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 public void resumeWith(@NonNull Object o) {
                     GenerateContentResponse response = (GenerateContentResponse) o;
                     String responseString = response.getText();
+                    assert responseString != null;
                     Log.d("Response", responseString);
                     runOnUiThread(() -> {
                         progressBar.setVisibility(GONE);
